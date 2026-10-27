@@ -161,6 +161,40 @@
       fin:"fish", lip:"smile", log:"logs", pot:"cooking-pot", top:"circle-dot"
     };
     const $ = id => document.getElementById(id);
+   // RESTORE ALL GAME TEXT
+const interfaceText = {
+  "start-title": "Blend the Sounds!",
+  "start-subtitle": "Listen to the sounds, blend them together, and choose the matching picture.",
+  "start-button": "Start Game",
+  "teacher-note": "Tap each letter to hear its sound. Listen carefully before choosing a picture.",
+
+  "exit-button": "Exit Game",
+  "game-title": "Blend the Sounds!",
+  "question-label": "Question",
+  "listen-instruction": "Listen to the sounds. Blend them to make a word.",
+  "first-label": "Consonant",
+  "middle-label": "Vowel",
+  "last-label": "Consonant",
+  "replay-button": "Play Sounds Again",
+  "choose-heading": "Which picture matches the word?",
+
+  "result-title": "Great job!",
+  "again-button": "Play Again",
+
+  "footer-note": "Phonics practice: CVC words",
+
+  "exit-title": "Leave the game?",
+  "exit-description": "Are you sure you want to leave? Your progress will be lost.",
+  "continue-button": "Continue Playing",
+  "confirm-exit-button": "Exit Game"
+};
+
+Object.entries(interfaceText).forEach(([id, text]) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.textContent = text;
+  }
+});
     const letterButtons = [0,1,2].map(i => $("letter-" + i));
     const screens = ["start-screen","game-screen","result-screen"];
     let session = [], questionIndex = 0, firstTryScore = 0, attempts = 0, locked = false;
