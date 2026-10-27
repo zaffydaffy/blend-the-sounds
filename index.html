@@ -34,8 +34,8 @@
     .danger:hover { background:#b52f38; }
     @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js" type="text/javascript"></script>
   <script src="/_sdk/2907482ed964d57b.data_sdk.js" type="text/javascript" integrity="sha512-GUvwysl7ZJ/sNlcDtv8sWKy0vKowoN/I+aynrBT6Rb9lfzvsjfkM9d1utuBD0yG/L4GoXXXzzxk194bhB49qfw=="></script>
   <script src="/_sdk/99381a008bf4ded9.editing_sdk.js" type="text/javascript" integrity="sha512-NvTAEdGONFzzmif5xSbprCVebe1rHI7Zrl4au96Bg+X7UZKQ3bWmMYlZ9YYExrZDsws+jcNdKZio0uM/6JZSRA=="></script>
   <script src="/_sdk/c774963abc6f03de.resizing_sdk.js" type="text/javascript" integrity="sha512-fVA81vJnL46vGKioyJJbk3XaJjdaKaDnDMTShVQ1S1kBQM4xcUhuy93NTuRYEspgyUVmkpVo4DcQ4X0vP2kYcQ=="></script>
@@ -45,16 +45,19 @@
    <div class="mx-auto w-full max-w-5xl">
     <main data-template-id="main-panel" class="canva-panel panel w-full rounded-[2rem] border-4 border-white bg-white p-5 sm:p-9">
      <section id="start-screen" class="py-8 text-center sm:py-14" aria-labelledby="start-title">
-      <div class="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-[2rem] bg-[#ffdf65] text-[#176ca4]" aria-hidden="true"><i data-lucide="audio-lines" class="h-12 w-12"></i>
+      <div class="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-[2rem] bg-[#ffdf65] text-[#176ca4]" aria-hidden="true">
+       <i data-lucide="audio-lines" class="h-12 w-12"></i>
       </div>
       <h1 id="start-title" data-template-id="start-title" class="canva-text mx-auto max-w-2xl font-bold leading-tight"></h1>
       <p data-template-id="start-subtitle" class="canva-text mx-auto mt-4 max-w-xl leading-relaxed"></p><button id="start-button" data-template-id="start-button" type="button" class="canva-button success mt-9 min-w-48 rounded-2xl px-10 py-4 font-bold shadow-lg"></button>
       <p data-template-id="teacher-note" class="canva-text mx-auto mt-8 max-w-xl"></p>
      </section>
      <section id="game-screen" aria-labelledby="game-title" hidden>
-      <header class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#e0f1fb] pb-5"><button id="exit-button" data-template-id="exit-button" type="button" class="canva-button danger rounded-xl px-5 py-3 font-semibold"></button>
+      <header class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#e0f1fb] pb-5">
+       <button id="exit-button" data-template-id="exit-button" type="button" class="canva-button danger rounded-xl px-5 py-3 font-semibold"></button>
        <h1 id="game-title" data-template-id="game-title" class="canva-text text-center font-bold"></h1>
-       <div class="rounded-full bg-[#e0f3ff] px-4 py-2 font-semibold text-[#125984]" aria-live="polite"><span data-template-id="question-label" class="canva-text"></span> <span id="question-count"></span>
+       <div class="rounded-full bg-[#e0f3ff] px-4 py-2 font-semibold text-[#125984]" aria-live="polite">
+        <span data-template-id="question-label" class="canva-text"></span> <span id="question-count"></span>
        </div>
       </header>
       <div class="pt-6 text-center">
@@ -80,7 +83,8 @@
       <p id="feedback" class="min-h-10 pt-4 text-center text-2xl font-bold" role="status" aria-live="assertive"></p>
      </section>
      <section id="result-screen" class="py-9 text-center" aria-labelledby="result-title" hidden>
-      <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#ffdf65] text-[#80520b]" aria-hidden="true"><i data-lucide="star" class="h-12 w-12"></i>
+      <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#ffdf65] text-[#80520b]" aria-hidden="true">
+       <i data-lucide="star" class="h-12 w-12"></i>
       </div>
       <h2 id="result-title" data-template-id="result-title" class="canva-text mt-6 font-bold"></h2>
       <p id="final-score" class="mt-4 text-[clamp(2rem,6vw,3.5rem)] font-bold text-[#176ca4]" aria-live="polite"></p><button id="again-button" data-template-id="again-button" type="button" class="canva-button success mt-7 rounded-2xl px-9 py-4 font-bold"></button>
@@ -95,7 +99,8 @@
    <div data-template-id="exit-panel" class="canva-panel w-full max-w-md rounded-[2rem] bg-white p-7 text-center shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="exit-title">
     <h2 id="exit-title" data-template-id="exit-title" class="canva-text font-bold"></h2>
     <p data-template-id="exit-description" class="canva-text mt-3"></p>
-    <div class="mt-7 flex flex-col gap-3 sm:flex-row"><button id="continue-button" data-template-id="continue-button" type="button" class="canva-button primary flex-1 rounded-xl px-4 py-3 font-semibold"></button> <button id="confirm-exit-button" data-template-id="confirm-exit-button" type="button" class="canva-button danger flex-1 rounded-xl px-4 py-3 font-semibold"></button>
+    <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+     <button id="continue-button" data-template-id="continue-button" type="button" class="canva-button primary flex-1 rounded-xl px-4 py-3 font-semibold"></button> <button id="confirm-exit-button" data-template-id="confirm-exit-button" type="button" class="canva-button danger flex-1 rounded-xl px-4 py-3 font-semibold"></button>
     </div>
    </div>
   </div>
@@ -109,14 +114,14 @@
     // INSERT GRAPHEME MP3 PATH HERE
     const graphemeAudio = {
       a:"", b:"", c:"", d:"", e:"", f:"", g:"", h:"", i:"",
-      j:"", l:"", m:"", n:"", o:"", p:"", r:"", s:"", t:"", u:""
+      j:"", l:"", m:"", n:"", o:"", p:"", q:"", r:"", s:"", t:"", u:""
     };
 
     // INSERT COMPLETE WORD MP3 HERE
     const wordAudio = {
       cat:"", dog:"", sun:"", hen:"", bed:"", jam:"", hat:"", net:"", mop:"", bus:"",
       bat:"", bag:"", can:"", cap:"", fan:"", man:"", pan:"", pen:"", ten:"", pet:"",
-      red:"", leg:"", pig:"", pin:"", sit:"", fin:"", lip:"", log:"", pot:"", top:""
+      red:"", leg:"", pin:"", sit:"", fin:"", lip:"", log:"", pot:"", top:""
     };
 
     // ============================================================
@@ -126,7 +131,7 @@
     const words = [
       "cat","dog","sun","hen","bed","jam","hat","net","mop","bus",
       "bat","bag","can","cap","fan","man","pan","pen","ten","pet",
-      "red","leg","pig","pin","sit","fin","lip","log","pot","top"
+      "red","leg","pin","sit","fin","lip","log","pot","top"
     ];
     const icons = {
       cat:"cat", dog:"dog", sun:"sun", hen:"bird", bed:"bed-double",
@@ -134,7 +139,7 @@
       bus:"bus-front", bat:"bird", bag:"briefcase-business", can:"cylinder",
       cap:"graduation-cap", fan:"fan", man:"user-round", pan:"cooking-pot",
       pen:"pen-line", ten:"special-ten", pet:"paw-print", red:"special-red",
-      leg:"footprints", pig:"piggy-bank", pin:"map-pin", sit:"armchair",
+      leg:"footprints", pin:"map-pin", sit:"armchair",
       fin:"fish", lip:"smile", log:"logs", pot:"cooking-pot", top:"circle-dot"
     };
     const $ = id => document.getElementById(id);
