@@ -38,6 +38,12 @@
   </style>
 </head>
 <body class="w-full">
+  <audio
+  id="background-music"
+  src="./audio/background/background-music.mp3"
+  loop
+  preload="auto"
+></audio>
   <div class="world w-full px-3 py-5 sm:px-8 sm:py-9">
     <div class="mx-auto w-full max-w-5xl">
       <main class="panel w-full rounded-[2rem] border-4 border-white bg-white p-5 sm:p-9">
@@ -257,6 +263,21 @@ function showScreen(id) { screens.forEach(name => $(name).hidden = name !== id);
   const LEADERBOARD_KEY = "blendTheSoundsLeaderboard";
 let playerName = "";
 let gameStartedAt = 0;
+  const backgroundMusic = $("background-music");
+
+backgroundMusic.volume = 0.08; // 8% volume
+
+async function playBackgroundMusic() {
+  try {
+    await backgroundMusic.play();
+  } catch (error) {
+    console.warn("Background music could not start:", error);
+  }
+}
+
+function pauseBackgroundMusic() {
+  backgroundMusic.pause();
+}
 
 function getLeaderboard() {
   try {
@@ -496,6 +517,7 @@ function startGame() {
   }
 
   playerName = enteredName.slice(0, 24);
+  playBackgroundMusic();
   cancelPlayback();
   session = shuffle(words).slice(0, 10);
   questionIndex = 0;
@@ -505,7 +527,11 @@ function startGame() {
   showScreen("game-screen");
   drawQuestion();
 }
-function closeModal() { $("exit-modal").hidden = true; $("exit-button").focus(); }
+function closeModal() {
+  $("exit-modal").hidden = true;
+  playBackgroundMusic();
+  $("exit-button").focus();
+}
 
 $("start-button").addEventListener("click", startGame);
   $("view-leaderboard-button").addEventListener("click", () => {
@@ -521,6 +547,8 @@ $("replay-button").addEventListener("click", playSequence);
 letterButtons.forEach((button, i) => button.addEventListener("click", () => playSingle(i)));
 $("exit-button").addEventListener("click", () => {
   cancelPlayback();
+  pauseBackgroundMusic();
+
   status("Paused");
   $("exit-modal").hidden = false;
   $("continue-button").focus();
@@ -528,6 +556,8 @@ $("exit-button").addEventListener("click", () => {
 $("continue-button").addEventListener("click", closeModal);
 $("confirm-exit-button").addEventListener("click", () => {
   cancelPlayback();
+  pauseBackgroundMusic();
+
   $("exit-modal").hidden = true;
   showScreen("start-screen");
   $("start-button").focus();
