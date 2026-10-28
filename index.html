@@ -277,8 +277,12 @@ async function playSingle(index) {
   if (token === generation) status("Ready");
 }
 function pictureMarkup(word) {
-  if (word === "red") return '<svg class="special" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="38" fill="#e34f56" stroke="#ad2531" stroke-width="5"/></svg>';
-  return '<i data-lucide="' + (icons[word] || "circle-help") + '" aria-hidden="true"></i>';
+  return `<img
+    src="images/${word}.png"
+    alt="${word}"
+    class="h-24 w-24 object-contain"
+    loading="eager"
+  />`;
 }
 function drawQuestion() {
   cancelPlayback();
