@@ -280,17 +280,17 @@ async function playSingle(index) {
 function pictureMarkup(word) {
   const extensions = {
     cat: "jpg",
-    red: "jpg",
-    jug: "jpeg.avif"
+    jug: "jpeg.avif",
+    red: "jpg"
   };
 
   const extension = extensions[word] || "png";
 
   return `<img
-    src="images/${word}.${extension}"
+    src="./images/${word}.${extension}"
     alt="${word}"
     class="h-24 w-24 object-contain"
-    style="width: 100%; height: 100%; max-width: 150px; max-height: 150px;"
+    style="width:100%;height:100%;max-width:150px;max-height:150px;"
   />`;
 }
 function drawQuestion() {
