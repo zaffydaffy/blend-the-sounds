@@ -265,7 +265,7 @@ async function playSequence() {
     if (token !== generation) return;
     await playLetter(i, token);
     if (token !== generation) return;
-    if (i < 2) { status("Waiting 1.5 seconds..."); await pause(2500, token); }
+    if (i < 2) { status("Waiting 1.5 seconds..."); await pause(1500, token); }
   }
   if (token === generation) status("Ready");
 }
