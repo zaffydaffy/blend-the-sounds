@@ -45,7 +45,40 @@
           <div class="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-[2rem] bg-[#ffdf65] text-[#176ca4]" aria-hidden="true"><i data-lucide="audio-lines" class="h-12 w-12"></i></div>
           <h1 id="start-title" class="mx-auto max-w-2xl font-bold leading-tight"></h1>
           <p id="start-subtitle" class="mx-auto mt-4 max-w-xl leading-relaxed"></p>
-          <button id="start-button" type="button" class="success mt-9 min-w-48 rounded-2xl px-10 py-4 font-bold shadow-lg"></button>
+         
+          <label for="player-name" class="mt-8 block font-semibold">Enter your name to play</label>
+          <input
+            id="player-name"
+            type="text"
+            maxlength="24"
+            autocomplete="given-name"
+            placeholder="Your name"
+            required
+            class="mx-auto mt-2 block w-full max-w-sm rounded-xl border-2 border-[#c6e4f7] px-4 py-3 text-center text-lg"
+          >
+
+          <button id="start-button" type="button" class="success mt-5 min-w-48 rounded-2xl px-10 py-4 font-bold shadow-lg">Start Game</button>
+
+          <button id="view-leaderboard-button" type="button" class="primary mt-3 rounded-2xl px-8 py-3 font-semibold">View Leaderboard</button>
+
+          <section id="start-leaderboard" class="mx-auto mt-8 max-w-2xl text-left" hidden>
+            <h2 class="mb-3 text-center text-2xl font-bold">Leaderboard</h2>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse text-sm sm:text-base">
+                <thead>
+                  <tr class="bg-[#e0f3ff]">
+                    <th class="p-2 text-left">Rank</th>
+                    <th class="p-2 text-left">Player</th>
+                    <th class="p-2 text-left">Score</th>
+                    <th class="p-2 text-left">Time</th>
+                    <th class="p-2 text-left">Date</th>
+                  </tr>
+                </thead>
+                <tbody id="start-leaderboard-body"></tbody>
+              </table>
+            </div>
+            <p id="start-leaderboard-empty" class="mt-3 text-center text-sm" hidden>No scores yet. Complete a game to appear here.</p>
+          </section>
           <p id="teacher-note" class="mx-auto mt-8 max-w-xl"></p>
         </section>
         <section id="game-screen" aria-labelledby="game-title" hidden>
@@ -73,6 +106,26 @@
           <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#ffdf65] text-[#80520b]" aria-hidden="true"><i data-lucide="star" class="h-12 w-12"></i></div>
           <h2 id="result-title" class="mt-6 font-bold"></h2>
           <p id="final-score" class="mt-4 text-[clamp(2rem,6vw,3.5rem)] font-bold text-[#176ca4]" aria-live="polite"></p>
+          <p id="completion-time" class="mt-2 text-lg font-semibold"></p>
+
+<section class="mx-auto mt-8 max-w-2xl text-left">
+  <h3 class="mb-3 text-center text-2xl font-bold">Leaderboard</h3>
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse text-sm sm:text-base">
+      <thead>
+        <tr class="bg-[#e0f3ff]">
+          <th class="p-2 text-left">Rank</th>
+          <th class="p-2 text-left">Player</th>
+          <th class="p-2 text-left">Score</th>
+          <th class="p-2 text-left">Time</th>
+          <th class="p-2 text-left">Date</th>
+        </tr>
+      </thead>
+      <tbody id="result-leaderboard-body"></tbody>
+    </table>
+  </div>
+  <p id="result-leaderboard-empty" class="mt-3 text-center text-sm" hidden>No scores yet.</p>
+</section>
           <button id="again-button" type="button" class="success mt-7 rounded-2xl px-9 py-4 font-bold"></button>
         </section>
       </main>
@@ -201,6 +254,89 @@ function shuffle(items) {
   return copy;
 }
 function showScreen(id) { screens.forEach(name => $(name).hidden = name !== id); }
+  const LEADERBOARD_KEY = "blendTheSoundsLeaderboard";
+let playerName = "";
+let gameStartedAt = 0;
+
+function getLeaderboard() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  } catch (error) {
+    console.error("Could not read leaderboard:", error);
+    return [];
+  }
+}
+
+function formatTime(milliseconds) {
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
+function renderLeaderboard(bodyId, emptyId) {
+  const tbody = $(bodyId);
+  const emptyMessage = $(emptyId);
+  const records = getLeaderboard()
+    .sort((a, b) => b.score - a.score || a.timeMs - b.timeMs)
+    .slice(0, 10);
+
+  tbody.replaceChildren();
+  emptyMessage.hidden = records.length > 0;
+
+  records.forEach((record, index) => {
+    const row = document.createElement("tr");
+    row.className = index % 2 === 0 ? "bg-white" : "bg-[#f3faff]";
+
+    const values = [
+      index + 1,
+      record.name,
+      `${record.score} / 10`,
+      formatTime(record.timeMs),
+      new Date(record.date).toLocaleString("en-GB", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit"
+})
+    ];
+
+    values.forEach(value => {
+      const cell = document.createElement("td");
+      cell.className = "border-b border-[#e0f1fb] p-2";
+      cell.textContent = String(value);
+      row.appendChild(cell);
+    });
+
+    tbody.appendChild(row);
+  });
+}
+
+function saveLeaderboardResult() {
+  const elapsed = Math.max(0, Math.round(performance.now() - gameStartedAt));
+  const records = getLeaderboard();
+
+  records.push({
+    name: playerName,
+    score: firstTryScore,
+    timeMs: elapsed,
+    date: new Date().toISOString()
+  });
+
+  records.sort((a, b) => b.score - a.score || a.timeMs - b.timeMs);
+
+  try {
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(records.slice(0, 100)));
+  } catch (error) {
+    console.error("Could not save leaderboard:", error);
+    alert("Your score could not be saved in this browser.");
+  }
+
+  $("completion-time").textContent = `Completion time: ${formatTime(elapsed)}`;
+  renderLeaderboard("result-leaderboard-body", "result-leaderboard-empty");
+}
 function status(text) { $("audio-status").textContent = text; }
 function cancelPlayback() {
   generation++;
@@ -344,22 +480,42 @@ async function selectChoice(choice, button) {
   await pause(1250, token);
   if (token !== generation) return;
   questionIndex++;
-  if (questionIndex === 10) {
-    $("final-score").textContent = `${firstTryScore} / 10 correct on your first try!`;
-    showScreen("result-screen");
-  } else drawQuestion();
+ if (questionIndex === 10) {
+  $("final-score").textContent = `${firstTryScore} / 10 correct on your first try!`;
+  saveLeaderboardResult();
+  showScreen("result-screen");
+} else drawQuestion();
 }
 function startGame() {
+  const enteredName = $("player-name").value.trim();
+
+  if (!enteredName) {
+    alert("Please enter your name before starting the game.");
+    $("player-name").focus();
+    return;
+  }
+
+  playerName = enteredName.slice(0, 24);
   cancelPlayback();
   session = shuffle(words).slice(0, 10);
   questionIndex = 0;
   firstTryScore = 0;
+  gameStartedAt = performance.now();
+
   showScreen("game-screen");
   drawQuestion();
 }
 function closeModal() { $("exit-modal").hidden = true; $("exit-button").focus(); }
 
 $("start-button").addEventListener("click", startGame);
+  $("view-leaderboard-button").addEventListener("click", () => {
+  const panel = $("start-leaderboard");
+  panel.hidden = !panel.hidden;
+
+  if (!panel.hidden) {
+    renderLeaderboard("start-leaderboard-body", "start-leaderboard-empty");
+  }
+});
 $("again-button").addEventListener("click", startGame);
 $("replay-button").addEventListener("click", playSequence);
 letterButtons.forEach((button, i) => button.addEventListener("click", () => playSingle(i)));
